@@ -16,13 +16,13 @@ app.use(express.json())
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
-const ORIGIN = process.env.ORIGIN || 'http://localhost:3000';
+const ORIGIN = process.env.ORIGIN || "http://localhost:5173";
 
 app.use(bodyParser.json());
 app.use(
     cors(
         {
-            origin: "http://localhost:5173",
+            origin: ORIGIN,
             credentials:true
         }
     )
@@ -31,10 +31,9 @@ app.use(
 
 app.use('/api/auth', authRoute);
 
-
-// app.use('/api/admin', adminRouter);
-
+// Connect to MongoDB
 connectDB();
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
