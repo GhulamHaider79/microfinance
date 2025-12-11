@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/libs/db.js';
 import authRoute from './src/routes/auth.Routes.js';
+import loanRoutes from './src/routes/loan.Routes.js';
 
 import cookieParser from 'cookie-parser';
 
@@ -30,6 +31,7 @@ app.use(
 
 
 app.use('/api/auth', authRoute);
+app.use('/api/loan', loanRoutes)
 
 // Connect to MongoDB
 connectDB();
