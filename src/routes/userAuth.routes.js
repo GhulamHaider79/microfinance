@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUser, login, logout, register, updateProfile } from '../controllers/user.controllers.js';
+import { getUser, login, logout, register, updateProfile } from '../controllers/user.controller.js';
 import { protectRoute } from '../middlewares/auth.middleware.js';
 import { upload } from '../utils/multer.js';
 
