@@ -19,6 +19,27 @@ app.use(cookieParser());
 const PORT = process.env.PORT || 8000;
 app.use(bodyParser.json());
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://microfinance-frontend-black.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow requests with no origin like curl or Postman
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, origin); // echo back the request origin
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true, // allow cookies
+  })
+);
+
 
 
 
@@ -34,7 +55,7 @@ app.use(bodyParser.json());
 //     )
 // );
 
-app.options("*", cors());
+app.options("*", cors({ credentials: true, origin: allowedOrigins }));
 
 
 
