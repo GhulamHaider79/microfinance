@@ -17,17 +17,25 @@ app.use(express.json())
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
-const ORIGIN = process.env.ORIGIN || "http://localhost:5173";
-
 app.use(bodyParser.json());
-app.use(
-    cors(
-        {
-            origin: ORIGIN,
-            credentials:true
-        }
-    )
-);
+
+
+
+
+// const ORIGIN = process.env.ORIGIN || "http://localhost:5173";
+
+
+// app.use(
+//     cors(
+//         {
+//             origin: ORIGIN,
+//             credentials:true
+//         }
+//     )
+// );
+
+app.options("*", cors());
+
 
 
 app.use('/api/auth', authRoute);
