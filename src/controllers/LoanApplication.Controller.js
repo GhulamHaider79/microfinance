@@ -1,4 +1,4 @@
-import LoanApplication from "../models/loan.Model.js";
+import LoanApplication from "../models/loan.model.js";
 
 export const createBasicLoan = async (req, res) => {
   const { category, subcategory, amount, loanPeriod, initialDeposit } = req.body;

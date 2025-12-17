@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/libs/db.js';
-import auth from './src/routes/auth.Routes.js';
-import loanroutes from './src/routes/loan.Routes.js';
+import auth from './src/routes/auth.routes.js';
+import loanroutes from './src/routes/loan.routes.js';
 
 import cookieParser from 'cookie-parser';
 
