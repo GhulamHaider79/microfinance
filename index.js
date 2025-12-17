@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/libs/db.js';
-import authRoute from './src/routes/auth.Routes.js';
-import loanRoutes from './src/routes/loan.Routes.js';
+import auth from './src/routes/auth.Routes.js';
+import loanroutes from './src/routes/loan.Routes.js';
 
 import cookieParser from 'cookie-parser';
 
@@ -57,10 +57,15 @@ app.use(
 
 app.options("*", cors({ credentials: true, origin: allowedOrigins }));
 
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 
-app.use('/api/auth', authRoute);
-app.use('/api/loan', loanRoutes)
+// /api/auth/register
+
+app.use('/api/auth', auth);
+app.use('/api/loan', loanroutes)
 
 // Connect to MongoDB
 connectDB();

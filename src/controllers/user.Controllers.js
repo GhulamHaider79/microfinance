@@ -8,6 +8,7 @@ import nodemailer from "nodemailer";
 
 export const register = async (req, res) => {
    const { fullName, email,password, cnic, } = req.body;
+   console.log("req.body", req.body);
    try {
       if (!fullName || !email || !password || !cnic) {
          return res.status(400).json({ message: " All fields are required " })
