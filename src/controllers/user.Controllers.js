@@ -7,9 +7,9 @@ import nodemailer from "nodemailer";
 
 
 export const register = async (req, res) => {
-   const { fullName, email, cnic, } = req.body;
+   const { fullName, email,password, cnic, } = req.body;
    try {
-      if (!fullName || !email || !cnic) {
+      if (!fullName || !email || !password || !cnic) {
          return res.status(400).json({ message: " All fields are required " })
       }
       const existingUser = await User.findOne({ email });
@@ -17,7 +17,7 @@ export const register = async (req, res) => {
       if (existingUser) {
          return res.status(400).json({ message: "User already exists" });
       }
-      const password = Math.random().toString(36).substring(2, 10);
+     
       
       const hashedPassword = await bcrypt.hash(password, 10);
    
