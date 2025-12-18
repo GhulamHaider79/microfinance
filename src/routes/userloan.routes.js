@@ -3,7 +3,7 @@ import express from 'express';
 import { adminOnly, protectRoute } from "../middlewares/userAuth.middlewares.js"
 import {createBasicLoan, updateBorrowerInfo, addDocuments} from "../controllers/loanApplication.controllers.js";
 
-import { createLoanCategory, getLoanCategory, updateLoanCategory } from '../controllers/loanCategories.controller.js';
+import { createLoanCategory, getLoanCategory, updateLoanCategory } from '../controllers/loanCategoey.controllers.js';
 const router = express.Router()
 
 router.post("/apply-loan", protectRoute, createBasicLoan);  
