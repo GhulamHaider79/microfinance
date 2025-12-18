@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/libs/db.js';
-import authRoute from './src/routes/userAuth.routes.js';
+import userauth from './src/routes/userAuth.routes.js';
 import loanroutes from './src/routes/userloan.routes.js';
 
 import cookieParser from 'cookie-parser';
@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
 
 // /api/auth/register
 
-app.use('/api/auth', authRoute);
+app.use('/api/auth', userauth);
 app.use('/api/loan', loanroutes)
 
 // Connect to MongoDB
