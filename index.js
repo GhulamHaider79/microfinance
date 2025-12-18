@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
 
 // /api/auth/register
 
-app.use('/register', userauth);
+app.use('/api/auth', userauth);
 app.use('/api/loan', loanroutes)
 
 // Connect to MongoDB

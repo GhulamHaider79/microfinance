@@ -8,10 +8,14 @@ import nodemailer from "nodemailer";
 
 export const register = async (req, res) => {
    const { fullName, email,password, cnic, } = req.body;
-   console.log("req.body", req.body);
+   console.log("req.body", fullName, email,password, cnic);
    try {
       if (!fullName || !email || !password || !cnic) {
          return res.status(400).json({ message: " All fields are required " })
+      }
+
+      if (cnic.length !== 13) {
+         return res.status(400).json({ message: "CNIC must be 13 digits" });
       }
       const existingUser = await User.findOne({ email });
 
@@ -43,11 +47,14 @@ export const register = async (req, res) => {
       });
       if (user) {
          console.log("user", user);
+// save user to database
+          await user.save();
          
        // generate token and set to cookie it is a function in utils/jwt.js
           generateToken(user._id, res);
-          // save user to database
-         await user.save();
+          console.log("Token generated and set to cookie");
+          
+        
          // send response to client 
          res.status(201).json({
             message: 'User created successfully',
@@ -64,8 +71,12 @@ export const register = async (req, res) => {
       }
 
    } catch (error) {
-      res.status(404).json({ message: "User not registered" })
-   }
+  console.error("REGISTER ERROR:", error);
+  res.status(500).json({
+    message: "User not registered",
+    error: error.message,
+  });
+}
 };
 
 
