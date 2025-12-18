@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { adminOnly, protectRoute } from "../middlewares/auth.middleware.js"
+import { adminOnly, protectRoute } from "../middlewares/userAuth.middlewares.js"
 import {createBasicLoan, updateBorrowerInfo, addDocuments} from "../controllers/loanApplication.controllers.js";
 
 import { createLoanCategory, getLoanCategory, updateLoanCategory } from '../controllers/loanCategories.controller.js';
