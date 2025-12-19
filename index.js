@@ -1,5 +1,5 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/libs/db.js';
@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
-app.use(bodyParser.json());
+
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -55,7 +55,7 @@ app.use(
 //     )
 // );
 
-app.options("*", cors({ credentials: true, origin: allowedOrigins }));
+
 
 app.get("/", (req, res) => {
   res.send("Backend is running");
