@@ -63,6 +63,7 @@ app.get("/", (req, res) => {
 
 
 // /api/auth/register
+// /api/auth//login
 
 app.use('/api/auth', userauth);
 app.use('/api/loan', loanroutes)

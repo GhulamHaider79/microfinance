@@ -108,6 +108,13 @@ export const login = async (req, res) => {
    }
 };
 
+export const me = async (req, res) => {
+  res.json({
+    success: true,
+    user: req.user,
+  });
+};
+
 
 export const logout = (req, res) => {
    console.log("user logout");
