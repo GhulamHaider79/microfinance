@@ -57,9 +57,6 @@ app.use(
 
 
 
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
 
 
 // /api/auth/register
