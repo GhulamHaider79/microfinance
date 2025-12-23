@@ -120,8 +120,14 @@ export const logout = (req, res) => {
    console.log("user logout");
    
    try {
-       res.cookie('Auth_Token', '', {maxAge: 0});
-       res.status(200).json({ message: 'Logged out successfully' });
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
    } catch (error) {
        console.log("error", error);
        res.status(500).json({ message: "Internal Server error" });
