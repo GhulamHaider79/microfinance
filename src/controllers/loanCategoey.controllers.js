@@ -1,65 +1,66 @@
-import LoanCategory from "../models/loanCategories.js";
+import LoanApplication from "../models/LoanApplication.js";
 
-export const createLoanCategory = async (req, res) => {
-  const { category,  subcategory,loanAmount, loanPeriod,  initialDeposit} = req.body;    
-    if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
-
-        res.status(400).json({ message: "All fieled are required" });
-    }
+export const applyLoan = async (req, res) => {
+  const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
+  if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
  
-    try{
-   const newCategory = new LoanCategory({
-        category,
-        subcategory,
-        loanAmount,
-        loanPeriod,
-        initialDeposit
-   });
 
-   if(newCategory){
-  console.log("newCategory", newCategory);
-       await newCategory.save();
-       return res.status(201).json({
+  try {
+    const newCategory =new LoanApplication({
+      userId: req.user._id,
+      category,
+      subcategory,
+      loanAmount,
+      loanPeriod,
+      initialDeposit
+    });
+
+    if (newCategory) {
+      console.log("newCategory", newCategory);
+      await newCategory.save();
+      return res.status(201).json({
         message: "Loan Category created successfully",
         category: {
           _id: newCategory._id,
-          categoryName: newCategory. category,
+          categoryName: newCategory.category,
           subcategories: newCategory.subcategory,
           maxLoan: newCategory.loanAmount,
           loanPeriod: newCategory.loanPeriod,
           initialDeposit: newCategory.initialDeposit
-   } 
-        });
-    }else{
-       return res.status(400).json({ message: "Error creating Loan Category" });
+        }
+      });
+    } else {
+      return res.status(400).json({ message: "Error creating Loan Category" });
     };
 
-   
-    }  catch(error){
-      return  res.status(500).json({ message: error.message });
-    }
+
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 
 export const getLoanCategory = async (req, res) => {
-   try {
-      const loanCategory  = await LoanCategory.find(); // Fetch all users
-      res.status(200).json({
-        success: true,
-        data: loanCategory ,
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Failed to fetch users",
-        error: error.message,
-      });
-    }
+  try {
+    const loanCategory = await LoanCategory.find(); // Fetch all users
+    res.status(200).json({
+      success: true,
+      data: loanCategory,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
 }
 
 
 
-  export const updateLoanCategory = async (req, res) => {
+export const updateLoanCategory = async (req, res) => {
   const { id } = req.params; // category ID from URL
   const { loanPeriod, maxLoan, subcategories, categoryName } = req.body;
 

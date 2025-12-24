@@ -1,54 +1,47 @@
 import mongoose from "mongoose";
 
-
 const guarantorSchema = new mongoose.Schema({
-  name: { type: String },
-  email: { type: String },
-  location: { type: String },
-  cnic: { type: String }
+  name: String,
+  email: String,
+  location: String,
+  cnic: String,
 });
 
+const loanApplicationSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-const loanApplicationSchema = new mongoose.Schema({
-  // Step 1: Loan Details
-userId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "User" }, 
-  category: { type: String, required: true },
-  subcategory: { type: String, required: true },
-  loanAmount: { type: String, required: true },
-  loanPeriod: { type: String, required: true },
-  initialDeposit: { type: String, required: true },
+    category: { type: String, required: true },
+    subcategory: { type: String, required: true },
 
-  // Step 2: Borrower Information
-  fullName: { type: String },
-  cnic: { type: String },
-  phoneNumber: { type: String },
-  address: { type: String },
-  city: { type: String },
-  country: { type: String },
+    loanAmount: { type: Number, required: true },
+    loanPeriod: { type: Number, required: true },
+    initialDeposit: { type: Number, required: true },
 
-  // Step 3: Guarantors
-  guarantors: [guarantorSchema],
+    fullName: String,
+    cnic: String,
+    phoneNumber: String,
+    address: String,
+    city: String,
+    country: String,
 
-  // Step 4: Additional fields (optional until final)
- 
-  statement: { type: String },
-  salarySheet: { type: String },
+    guarantors: [guarantorSchema],
 
-  // Admin Section
-  tokenNumber: { type: String, default: null },
-  status: { type: String, default: "Pending" }, // Pending, Approved, Rejected
+    statement: String,
+    salarySheet: String,
 
-  createdAt: { type: Date, default: Date.now }
+    tokenNumber: { type: String, default: null },
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
+  },
+  { timestamps: true }
+);
 
-
-
-
-
-
-});
-
-const LoanApplication = mongoose.model("LoanApplication", loanApplicationSchema);
-
-export default LoanApplication
+export default mongoose.model("LoanApplication", loanApplicationSchema);

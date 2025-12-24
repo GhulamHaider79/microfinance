@@ -1,29 +1,37 @@
 import LoanApplication from "../models/userloan.model.js";
 
-export const createBasicLoan = async (req, res) => {
-  const { category, subcategory, amount, loanPeriod, initialDeposit } = req.body;
-
-  if (!category || !subcategory || !amount || !loanPeriod || !initialDeposit) {
-    res.status(400).json({ message: "All fields are required" });
-    return;
+export const createBasicLoan =async (req, res) => {
+  const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
+  if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
+    return res.status(400).json({ message: "All fields are required" });
   }
+
+
   try {
-    const application = await LoanApplication.create({
+    const newLoan = new LoanApplication({
+      userId: req.user._id,
       category,
       subcategory,
-      amount,
+      loanAmount,
       loanPeriod,
-      initialDeposit,
+      initialDeposit
     });
 
-    res.status(201).json({
-      message: "Basic loan application created",
-      application: application,
-      applicationId: application._id,
-    });
+    if (newLoan) {
+      
+      await newLoan.save();
+      return res.status(201).json({
+        success: true,
+        message: "Loan application submitted successfully",
+        data: newLoan,
+      });
+    } else {
+      return res.status(400).json({ message: "Error creating Loan Category" });
+    };
+
 
   } catch (error) {
-    res.status(500).json({ message: "Error creating application", error });
+    return res.status(500).json({ message: error.message });
   }
 };
 
