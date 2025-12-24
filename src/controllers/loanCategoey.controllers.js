@@ -1,18 +1,19 @@
 import LoanCategory from "../models/loanCategories.js";
 
 export const createLoanCategory = async (req, res) => {
-  const { categoryName, subcategories, maxLoan, loanPeriod } = req.body;    
-    if (!categoryName || !maxLoan || !loanPeriod || !subcategories) {
+  const { category,  subcategory,loanAmount, loanPeriod,  initialDeposit} = req.body;    
+    if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
 
         res.status(400).json({ message: "All fieled are required" });
     }
-
+ 
     try{
    const newCategory = new LoanCategory({
-        categoryName,
-        subcategories,
-        maxLoan,
-        loanPeriod
+        category,
+        subcategory,
+        loanAmount,
+        loanPeriod,
+        initialDeposit
    });
 
    if(newCategory){
@@ -22,10 +23,11 @@ export const createLoanCategory = async (req, res) => {
         message: "Loan Category created successfully",
         category: {
           _id: newCategory._id,
-          categoryName: newCategory.categoryName,
-          subcategories: newCategory.subcategories,
-          maxLoan: newCategory.maxLoan,
-          loanPeriod: newCategory.loanPeriod   
+          categoryName: newCategory. category,
+          subcategories: newCategory.subcategory,
+          maxLoan: newCategory.loanAmount,
+          loanPeriod: newCategory.loanPeriod,
+          initialDeposit: newCategory.initialDeposit
    } 
         });
     }else{

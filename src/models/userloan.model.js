@@ -16,9 +16,9 @@ userId: {
     ref: "User" }, 
   category: { type: String, required: true },
   subcategory: { type: String, required: true },
-  amount: { type: String, required: true },
+  loanAmount: { type: String, required: true },
   loanPeriod: { type: String, required: true },
-   initialDeposit: { type: String, equired: true  },
+  initialDeposit: { type: String, required: true },
 
   // Step 2: Borrower Information
   fullName: { type: String },
