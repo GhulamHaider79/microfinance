@@ -1,22 +1,13 @@
-import LoanApplication from "../models/LoanApplication.js";
 
-export const applyLoan = async (req, res) => {
+import LoanCategory from "../models/loanCategories.js";
+
+export const createLoanCategory = async (req, res) => {
   const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
-  if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
- 
+  if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) 
+    { res.status(400).json({ message: "All fieled are required" }); }
 
   try {
-    const newCategory =new LoanApplication({
-      userId: req.user._id,
-      category,
-      subcategory,
-      loanAmount,
-      loanPeriod,
-      initialDeposit
-    });
-
+    const newCategory = new LoanCategory({ category, subcategory, loanAmount, loanPeriod, initialDeposit });
     if (newCategory) {
       console.log("newCategory", newCategory);
       await newCategory.save();
@@ -31,14 +22,12 @@ export const applyLoan = async (req, res) => {
           initialDeposit: newCategory.initialDeposit
         }
       });
-    } else {
+    }
+    else {
       return res.status(400).json({ message: "Error creating Loan Category" });
     };
-
-
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
   }
+  catch (error) { return res.status(500).json({ message: error.message }); }
 };
 
 

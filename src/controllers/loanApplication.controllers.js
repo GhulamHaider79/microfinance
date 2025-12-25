@@ -2,7 +2,13 @@ import LoanApplication from "../models/userloan.model.js";
 
 export const createBasicLoan =async (req, res) => {
   const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
-  if (!category || !loanAmount || !loanPeriod || !subcategory || !initialDeposit) {
+  if (
+    !category ||
+    !subcategory ||
+    loanAmount == null ||
+    loanPeriod == null ||
+    initialDeposit == null
+  ) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
