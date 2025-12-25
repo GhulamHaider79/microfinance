@@ -10,8 +10,24 @@ export const createBasicLoan =async (req, res) => {
     initialDeposit == null
   ) {
     return res.status(400).json({ message: "All fields are required" });
-  }
+  };
 
+  try {
+    // 🔒 BLOCK multiple pending loans
+    const existingLoan = await LoanApplication.findOne({
+      userId: req.user._id,
+      status: "Pending",
+    });
+
+    if (existingLoan) {
+      return res.status(400).json({
+        success: false,
+        message: "You already have a pending loan application.",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 
   try {
     const newLoan = new LoanApplication({
