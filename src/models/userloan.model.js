@@ -4,6 +4,8 @@ const guarantorSchema = new mongoose.Schema({
   name: String,
   email: String,
   location: String,
+  country: String,
+  city: String,
   cnic: String,
 });
 
@@ -35,6 +37,7 @@ const loanApplicationSchema = new mongoose.Schema(
     salarySheet: String,
 
     tokenNumber: { type: String, default: null },
+    stepCompleted: { type: Number, default: 0 },
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected"],

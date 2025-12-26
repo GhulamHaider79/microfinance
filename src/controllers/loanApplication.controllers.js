@@ -1,6 +1,7 @@
+import { uploadCloudinary } from "../libs/cloudinary.js";
 import LoanApplication from "../models/userloan.model.js";
 
-export const createBasicLoan =async (req, res) => {
+export const createBasicLoan = async (req, res) => {
   const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
   if (
     !category ||
@@ -36,11 +37,12 @@ export const createBasicLoan =async (req, res) => {
       subcategory,
       loanAmount,
       loanPeriod,
-      initialDeposit
+      initialDeposit,
+      stepCompleted: 1
     });
 
     if (newLoan) {
-      
+
       await newLoan.save();
       return res.status(201).json({
         success: true,
@@ -58,12 +60,35 @@ export const createBasicLoan =async (req, res) => {
 };
 
 export const updateBorrowerInfo = async (req, res) => {
-  const { fullName, cnic, phoneNumber, address, city, country } = req.body;
+  const { fullName, cnic, phoneNumber, address, city, country, statement, salarySheet } = req.body;
+if (!statement.file || !salarySheet.file) {
+      return res.status(400).json({ message: "statement/salarySheet is required" });
+    }
+    
+    // Path to the uploaded file
+    const localFilePath = req.file.path;
 
-  if (!fullName || !cnic || !phoneNumber || !address || !city || !country) {
+    // Upload to Cloudinary
+    const cloudinaryResponse = await uploadCloudinary(localFilePath);
+
+    if (!cloudinaryResponse) {
+      return res.status(500).json({ message: "Failed to upload image to Cloudinary" });
+    }
+     // Delete local file after upload
+     fs.unlinkSync(localFilePath);
+
+  if (
+    !fullName.trim() === "" || 
+    !cnic.trim() === "" || 
+    !phoneNumber.trim() === "" || 
+    !address.trim() === "" || 
+    !city.trim() === "" || 
+    !country.trim() === "" 
+   ) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
+
   try {
     const updated = await LoanApplication.findByIdAndUpdate(
       req.params.id,
@@ -81,6 +106,52 @@ export const updateBorrowerInfo = async (req, res) => {
 
     res.status(200).json({ message: "Borrower info updated", updated });
 
+  } catch (error) {
+    res.status(500).json({ message: "Error updating borrower info", error });
+  }
+};
+
+
+export const guarantorDetails = async (req, res) => {
+  const { name, cnic, address, city, country } = req.body;
+
+  if (
+    !name.trim() === "" ||
+    !cnic.trim() === "" ||
+    !address.trim() === "" ||
+    !city.trim() === "" ||
+    !country.trim() === "") {
+    res.status(400).json({ message: "All fields are required" });
+    return;
+  }
+  try {
+    const loanGuarantor = await LoanApplication.findOneAndUpdate(
+      {
+        userId: req.user._id,
+        status: "Pending",
+      },
+      {
+        name,
+        cnic,
+        address,
+        city,
+        country,
+        stepCompleted: 2
+      },
+      { new: true }
+    );
+
+    if (!loanGuarantor) {
+      return res.status(404).json({
+        message: "No pending loan found for this user",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Guarantor info updated",
+      data: loanGuarantor,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error updating borrower info", error });
   }

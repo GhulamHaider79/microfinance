@@ -62,6 +62,7 @@ app.use(
 // /api/auth/register
 // /api/auth//login
 // /api/loan/apply-loan
+// /api/loan/guarantor
 
 app.use('/api/auth', userauth);
 app.use('/api/loan', loanroutes)
