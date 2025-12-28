@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
         maxLength: 13,
         minLength: 13
     },
-    
+    roll: {
+        type: String,
+        enum: ['admin', 'user', ],
+        default: 'user'
+    }
     
      
 });
