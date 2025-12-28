@@ -16,11 +16,11 @@ export const uploadCloudinary = async (localFilePath) => {
     // upload file on cloudinary
     const res = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
-      folder: "my_folder"
+      folder: "loan_documents"
     });
 
-    // file upload successfully 
-    console.log("file upload on cloudinary", res);
+    // remove file from local uploads folder
+    fs.unlinkSync(localFilePath);
 
     // Clean up local file after successful upload
     if (fs.existsSync(localFilePath)) {
@@ -29,8 +29,10 @@ export const uploadCloudinary = async (localFilePath) => {
 
     return res
   } catch (error) {
-    fs.unlinkSync(localFilePath)
-    return error
+  if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+    throw error;
   }
 }
 
