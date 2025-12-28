@@ -178,13 +178,23 @@ export const addDocuments = async (req, res) => {
 };
 
 
-export const getAllApplications = async (req, res) => {
+export const getMyLoanApplications = async (req, res) => {
   try {
-    const applications = await LoanApplication.find();
-    res.status(200).json({ message: "Applications fetched successfully", applications });
+    const userId = req.user.id; 
+
+    const loans = await LoanApplication.find({ user: userId })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: loans.length,
+      loans,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error fetching applications" });
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch loan applications",
+    });
   }
 };
 
