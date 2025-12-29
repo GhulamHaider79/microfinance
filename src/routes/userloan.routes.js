@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { adminOnly, protectRoute } from "../middlewares/userAuth.middlewares.js"
-import {createBasicLoan, updateBorrowerInfo, addDocuments, guarantorDetails, getMyLoanApplications} from "../controllers/loanApplication.controllers.js";
+import {createBasicLoan, updateBorrowerInfo, addDocuments, guarantorDetails, getMyLoanApplications, downloadLoanSlip} from "../controllers/loanApplication.controllers.js";
 
 import { createLoanCategory, getLoanCategory, updateLoanCategory } from '../controllers/loanCategoey.controllers.js';
 import { upload } from "../utils/multer.js"
@@ -22,6 +22,14 @@ router.put("/borrower-info", protectRoute,  upload.fields([
   updateBorrowerInfo); 
 
 //  "/borrower-info/:id",
+
+
+router.get(
+  "/download-slip/:id",
+  protectRoute,
+  downloadLoanSlip
+);
+
 
 
 export default router;
