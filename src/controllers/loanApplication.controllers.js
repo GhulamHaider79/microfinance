@@ -201,7 +201,7 @@ export const getMyLoanApplications = async (req, res) => {
   try {
     const userId = req.user.id; 
 
-    const loans = await LoanApplication.find({ user: userId })
+    const loans = await LoanApplication.find({ userId: req.user._id })
       .sort({ createdAt: -1 });
 
     res.status(200).json({
