@@ -100,7 +100,7 @@ export const updateBorrowerInfo = async (req, res) => {
     }
 
     // ✅ Update DB
-    const updated = await LoanApplication.findByIdAndUpdate(
+    const updated = await LoanApplication.findOneAndUpdate(
       {
         userId: req.user._id,
         status: "Pending",
