@@ -3,6 +3,7 @@ import PDFDocument from "pdfkit";
 export const generateLoanSlip = (res, loan, user) => {
   const doc = new PDFDocument({ size: "A4", margin: 50 });
 
+  // HEADERS MUST BE SET BEFORE pipe()
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader(
     "Content-Disposition",
@@ -11,11 +12,9 @@ export const generateLoanSlip = (res, loan, user) => {
 
   doc.pipe(res);
 
-  // Title
   doc.fontSize(18).text("Loan Application Slip", { align: "center" });
   doc.moveDown();
 
-  // Borrower Info
   doc.fontSize(12);
   doc.text(`Name: ${user.name}`);
   doc.text(`CNIC: ${loan.cnic}`);
@@ -26,7 +25,6 @@ export const generateLoanSlip = (res, loan, user) => {
 
   doc.moveDown();
 
-  // Loan Info
   doc.text(`Loan Amount: Rs ${loan.loanAmount}`);
   doc.text(`Loan Period: ${loan.loanPeriod} Months`);
   doc.text(`Status: ${loan.status}`);
