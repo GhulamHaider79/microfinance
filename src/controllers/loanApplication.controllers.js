@@ -101,7 +101,10 @@ export const updateBorrowerInfo = async (req, res) => {
 
     // ✅ Update DB
     const updated = await LoanApplication.findByIdAndUpdate(
-      req.user._id,
+      {
+        userId: req.user._id,
+        status: "Pending",
+      },
       {
         fullName,
         cnic,
@@ -111,7 +114,7 @@ export const updateBorrowerInfo = async (req, res) => {
         country,
         statementUrl: statementUpload.secure_url,
         salarySheetUrl: salaryUpload.secure_url,
-        stepCompleted: 2,
+        stepCompleted: 2
       },
       { new: true }
     );
@@ -155,7 +158,7 @@ export const guarantorDetails = async (req, res) => {
         address,
         city,
         country,
-        stepCompleted: 2
+        stepCompleted: 3
       },
       { new: true }
     );
