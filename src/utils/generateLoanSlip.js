@@ -25,10 +25,14 @@ console.log("on Genreat Slip ", res, loan, user);
   doc.text(`Country: ${loan.country}`);
 
   doc.moveDown();
+  const totalMonths = loan.loanPeriod * 12;
+  const actualLoan = loan.loanAmount - loan.initialDeposit;
+  const MonthlyInstallment = actualLoan / totalMonths;
 
   doc.text(`Loan Amount: Rs ${loan.loanAmount}`);
   doc.text(`Loan Period: ${loan.loanPeriod} Months`);
   doc.text(`Status: ${loan.status}`);
+  doc.text(`Monthly Installment: Rs ${MonthlyInstallment.toFixed(2)}`);
 
   doc.moveDown();
   doc.text(`Date: ${new Date().toLocaleDateString()}`);
