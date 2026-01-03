@@ -178,26 +178,27 @@ export const guarantorDetails = async (req, res) => {
     res.status(500).json({ message: "Error updating borrower info", error });
   }
 };
+// Add Documents (Bank Statement, Salary Sheet, Initial Deposit)
+export const addDocuments = async (req, res) => {
+  try {
+    const updated = await LoanApplication.findByIdAndUpdate(
+      req.params.id,
+      {
+        statement: req.body.statement,
+        salarySheet: req.body.salarySheet,
+        initialDeposit: req.body.initialDeposit,
+        stepCompleted: 4
+      },
 
-// export const addDocuments = async (req, res) => {
-//   try {
-//     const updated = await LoanApplication.findByIdAndUpdate(
-//       req.params.id,
-//       {
-//         statement: req.body.statement,
-//         salarySheet: req.body.salarySheet,
-//         initialDeposit: req.body.initialDeposit,
-//         stepCompleted: 4
-//       },
-//       { new: true }
-//     );
+      { new: true }
+    );
 
-//     res.status(200).json({ message: "Documents added", updated });
+    res.status(200).json({ message: "Documents added", updated });
 
-//   } catch (error) {
-//     res.status(500).json({ message: "Error adding documents", error });
-//   }
-// };
+  } catch (error) {
+    res.status(500).json({ message: "Error adding documents", error });
+  }
+};
 
 
 export const getMyLoanApplications = async (req, res) => {
