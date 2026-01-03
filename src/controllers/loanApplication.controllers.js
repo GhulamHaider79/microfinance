@@ -255,23 +255,23 @@ export const addTokenNumber = async (req, res) => {
 
 
 export const downloadLoanSlip = async (req, res) => {
-  console.log("Downloading loan slip for application ID:", req.params.id);
-  
   try {
-    const loan = await LoanApplication.findById(req.params.id);
+    // FIX: Pass an object or use findById
+    const loan = await LoanApplication.findById(req.params.id); 
+    
     if (!loan) {
       return res.status(404).json({ message: "Loan not found" });
     }
 
-    // Security check
     if (loan.userId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    const slip = generateLoanSlip(res, loan, req.user);
-    console.log("Genreated Slip", slip);
+    // This function handles res.setHeader and doc.pipe
+    generateLoanSlip(res, loan, req.user);
     
   } catch (error) {
+    console.error("Download Error:", error);
     res.status(500).json({ message: "PDF generation failed" });
   }
 };
