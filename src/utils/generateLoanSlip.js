@@ -17,7 +17,7 @@ console.log("on Genreat Slip ", res, loan, user);
   doc.moveDown();
 
   doc.fontSize(12);
-  doc.text(`Name: ${user.name}`);
+  doc.text(`Name: ${loan.fullName || user.fullName}`);
   doc.text(`CNIC: ${loan.cnic}`);
   doc.text(`Phone: ${loan.phoneNumber}`);
   doc.text(`Address: ${loan.address}`);
