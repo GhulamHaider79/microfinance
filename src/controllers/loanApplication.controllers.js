@@ -179,25 +179,25 @@ export const guarantorDetails = async (req, res) => {
   }
 };
 
-export const addDocuments = async (req, res) => {
-  try {
-    const updated = await LoanApplication.findByIdAndUpdate(
-      req.params.id,
-      {
-        statement: req.body.statement,
-        salarySheet: req.body.salarySheet,
-        initialDeposit: req.body.initialDeposit,
-        stepCompleted: 4
-      },
-      { new: true }
-    );
+// export const addDocuments = async (req, res) => {
+//   try {
+//     const updated = await LoanApplication.findByIdAndUpdate(
+//       req.params.id,
+//       {
+//         statement: req.body.statement,
+//         salarySheet: req.body.salarySheet,
+//         initialDeposit: req.body.initialDeposit,
+//         stepCompleted: 4
+//       },
+//       { new: true }
+//     );
 
-    res.status(200).json({ message: "Documents added", updated });
+//     res.status(200).json({ message: "Documents added", updated });
 
-  } catch (error) {
-    res.status(500).json({ message: "Error adding documents", error });
-  }
-};
+//   } catch (error) {
+//     res.status(500).json({ message: "Error adding documents", error });
+//   }
+// };
 
 
 export const getMyLoanApplications = async (req, res) => {
@@ -273,5 +273,22 @@ export const downloadLoanSlip = async (req, res) => {
   } catch (error) {
     console.error("Download Error:", error);
     res.status(500).json({ message: "PDF generation failed" });
+  }
+};
+
+
+export const deleteLoanApplication = async (req, res) => {
+  try {
+    const deletedLoan = await LoanApplication.findByIdAndDelete(req.params.id); 
+    if (!deletedLoan) {
+      return res.status(404).json({ message: "Loan application not found" });
+    }
+    res.status(200).json({ 
+      status: "success",
+      message: "Loan application deleted successfully" });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting loan application" });
   }
 };
