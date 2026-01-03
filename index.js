@@ -24,23 +24,40 @@ const allowedOrigins = [
   "https://microfinance-frontend-black.vercel.app",
 ];
 
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       // allow requests with no origin like curl or Postman
+//       if (!origin) return callback(null, true);
+
+//       if (allowedOrigins.includes(origin)) {
+//         callback(null, origin); // echo back the request origin
+//       } else {
+//         callback(new Error("CORS not allowed"));
+//       }
+//     },
+//     credentials: true, // allow cookies
+//   })
+// );
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allow requests with no origin like curl or Postman
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
-        callback(null, origin); // echo back the request origin
-      } else {
-        callback(new Error("CORS not allowed"));
+        return callback(null, true);
       }
+
+      return callback(new Error("CORS not allowed"));
     },
-    credentials: true, // allow cookies
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-
+app.options("*", cors());
 
 
 // const ORIGIN = process.env.ORIGIN || "http://localhost:5173";

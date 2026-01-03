@@ -2,6 +2,7 @@ import PDFDocument from "pdfkit";
 
 export const generateLoanSlip = (res, loan, user) => {
   const doc = new PDFDocument({ size: "A4", margin: 50 });
+console.log("on Genreat Slip ", res, loan, user);
 
   // HEADERS MUST BE SET BEFORE pipe()
   res.setHeader("Content-Type", "application/pdf");

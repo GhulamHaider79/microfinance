@@ -255,6 +255,8 @@ export const addTokenNumber = async (req, res) => {
 
 
 export const downloadLoanSlip = async (req, res) => {
+  console.log("Downloading loan slip for application ID:", req.params.id);
+  
   try {
     const loan = await LoanApplication.findById(req.params.id);
     if (!loan) {
@@ -266,7 +268,9 @@ export const downloadLoanSlip = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    generateLoanSlip(res, loan, req.user);
+    const slip = generateLoanSlip(res, loan, req.user);
+    console.log("Genreated Slip", slip);
+    
   } catch (error) {
     res.status(500).json({ message: "PDF generation failed" });
   }
