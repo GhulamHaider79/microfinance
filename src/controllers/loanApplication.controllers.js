@@ -1,10 +1,12 @@
-import { uploadCloudinary } from "../libs/cloudinary.js";
-import LoanApplication from "../models/userloan.model.js";
-import { generateLoanSlip } from "../utils/generateLoanSlip.js";
+import { uploadCloudinary } from "../libs/cloudinary.js"; // cloudinary upload utility
+import LoanApplication from "../models/userloan.model.js"; 
+import { generateLoanSlip } from "../utils/generateLoanSlip.js"; // grnerate PDF utility
 
-
+// Create Basic Loan Application
 export const createBasicLoan = async (req, res) => {
-  const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body;
+  const { category, subcategory, loanAmount, loanPeriod, initialDeposit } = req.body; // destructure req.body
+
+  // ✅ Validate required fields
   if (
     !category ||
     !subcategory ||
@@ -14,14 +16,14 @@ export const createBasicLoan = async (req, res) => {
   ) {
     return res.status(400).json({ message: "All fields are required" });
   };
-
+// Check for existing pending loan application
   try {
     // 🔒 BLOCK multiple pending loans
     const existingLoan = await LoanApplication.findOne({
       userId: req.user._id,
       status: "Pending",
     });
-
+   // If found, block new application
     if (existingLoan) {
       return res.status(400).json({
         success: false,
@@ -33,7 +35,7 @@ export const createBasicLoan = async (req, res) => {
   }
 
   try {
-    const newLoan = new LoanApplication({
+    const newLoan = new LoanApplication({ // create new loan application
       userId: req.user._id,
       category,
       subcategory,
@@ -43,10 +45,10 @@ export const createBasicLoan = async (req, res) => {
       stepCompleted: 1
     });
 
+    
     if (newLoan) {
-
-      await newLoan.save();
-      return res.status(201).json({
+      await newLoan.save(); // loan application save
+      return res.status(201).json({  // respond with success
         success: true,
         message: "Loan application submitted successfully",
         data: newLoan,
@@ -62,7 +64,7 @@ export const createBasicLoan = async (req, res) => {
 };
 
 
-
+// update Borrower Information
 export const updateBorrowerInfo = async (req, res) => {
   try {
     const { fullName, cnic, phoneNumber, address, city, country } = req.body;
@@ -133,7 +135,7 @@ export const updateBorrowerInfo = async (req, res) => {
 };
 
 
-
+// Guarantor Details
 export const guarantorDetails = async (req, res) => {
   const { name, cnic, address, city, country } = req.body;
 
@@ -178,6 +180,8 @@ export const guarantorDetails = async (req, res) => {
     res.status(500).json({ message: "Error updating borrower info", error });
   }
 };
+
+
 // Add Documents (Bank Statement, Salary Sheet, Initial Deposit)
 export const addDocuments = async (req, res) => {
   try {

@@ -12,7 +12,7 @@ router.get("/my-loans", protectRoute, getMyLoanApplications);
 router.post("/guarantor", protectRoute, guarantorDetails); 
 router.put("/add-documents", protectRoute, addDocuments);
 router.post("/loanCategory", protectRoute, adminOnly, createLoanCategory); 
-router.get("/get-loanCategory", protectRoute, adminOnly, getLoanCategory);
+router.get("/get-loanCategory",  getLoanCategory);
 router.put("/update-loanCategory/:id", protectRoute, adminOnly, updateLoanCategory);
 
 router.put("/borrower-info", protectRoute,  upload.fields([
